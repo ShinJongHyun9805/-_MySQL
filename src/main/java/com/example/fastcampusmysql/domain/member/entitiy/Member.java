@@ -19,13 +19,13 @@ public class Member {
 
     private final LocalDate birthDay;
 
-    private final LocalDateTime createAt;
+    private final LocalDateTime createdAt;
 
     // 닉네임 제한
     private final static Long NAME_MAX_LEN = 10L;
 
     @Builder
-    public Member(Long id, String nickname, String email, LocalDate birthDay, LocalDateTime createAt) {
+    public Member(Long id, String nickname, String email, LocalDate birthDay, LocalDateTime createdAt) {
         this.id = id;
         this.email = Objects.requireNonNull(email);
         this.birthDay = Objects.requireNonNull(birthDay);
@@ -33,7 +33,7 @@ public class Member {
         validateNickname(nickname);
         this.nickname = Objects.requireNonNull(nickname);
 
-        this.createAt = createAt == null ? LocalDateTime.now() : createAt;
+        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
     // 닉네임 체크
