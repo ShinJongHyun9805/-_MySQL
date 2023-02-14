@@ -13,7 +13,7 @@ public class MemberWriteService {
 
     private final MemberRepository memberRepository;
 
-    public Member create(RegisterMemberCommand command){
+    public Member register(RegisterMemberCommand command){
         Member member = Member.builder()
                 .nickname(command.getNickname())
                 .email(command.getEmail())
