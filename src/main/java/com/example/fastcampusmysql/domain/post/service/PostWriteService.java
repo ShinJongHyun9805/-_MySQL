@@ -22,7 +22,7 @@ public class PostWriteService {
                 .contents(postCommand.getContent())
                 .build();
 
-       return  postRepository.save(post).getId();
+       return postRepository.save(post).getId();
     }
 
 }

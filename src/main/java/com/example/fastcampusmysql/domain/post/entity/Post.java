@@ -20,7 +20,6 @@ public class Post {
 
     private LocalDateTime createdAt;
 
-
     @Builder
     public Post(Long id, Long memberId, String contents, LocalDate createdDate, LocalDateTime createdAt) {
         this.id = id;
