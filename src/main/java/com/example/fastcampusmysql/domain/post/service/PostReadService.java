@@ -68,4 +68,8 @@ public class PostReadService {
         return postRepository.findAllByInMemberIdAndOrderByIdsDesc(memberIds, request.getSize());
     }
 
+    public List<Post> getPosts(List<Long> ids){
+        return postRepository.findAllyInId(ids);
+    }
+
 }
