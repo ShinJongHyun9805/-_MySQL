@@ -14,6 +14,7 @@ public class CursorRequest {
     private int size;
 
     public CursorRequest(Long key) {
+        this.key = key;
     }
 
     public Boolean hasKey(){

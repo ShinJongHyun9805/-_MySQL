@@ -39,8 +39,6 @@ public class PostReadService {
                 .min()
                 .orElse(request.NONE_KEY);
 
-
-
         return new PageCursor<>(request.next(nextKey), posts);
     }
 
@@ -50,8 +48,24 @@ public class PostReadService {
         }
         return postRepository.findAllByMemberIdAndOrderByIdDesc(memberId, request.getSize());
     }
+
+    // cursor 페이징 다수 멤버Id
+    public PageCursor<Post> getPosts(List<Long> memberIds, CursorRequest request){
+        var posts = findAllBy(memberIds, request);
+
+        var nextKey = posts.stream()
+                .mapToLong(Post::getId)
+                .min()
+                .orElse(request.NONE_KEY);
+
+        return new PageCursor<>(request.next(nextKey), posts);
+    }
+
+    private List<Post> findAllBy(List<Long> memberIds, CursorRequest request){
+        if(request.hasKey()) {
+            return postRepository.findAllByInlessThenIdAndMemberIdsOrderByIdDesc(request.getKey(), memberIds, request.getSize());
+        }
+        return postRepository.findAllByInMemberIdAndOrderByIdsDesc(memberIds, request.getSize());
+    }
+
 }
-
-
-
-
