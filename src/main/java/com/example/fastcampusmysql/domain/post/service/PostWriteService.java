@@ -28,9 +28,17 @@ public class PostWriteService {
        return postRepository.save(post).getId();
     }
 
-    @Transactional
+    @Transactional // 비관적 락(쓰레드 순차적 처리)
     public void likePost(Long postId){
         var post = postRepository.findById(postId, true).orElseThrow();
+        post.incrementLikCount();
+
+        postRepository.save(post);
+    }
+
+    // 낙관적 락
+    public void likePostByOptimisticLock(Long postId){
+        var post = postRepository.findById(postId, false).orElseThrow();
         post.incrementLikCount();
 
         postRepository.save(post);

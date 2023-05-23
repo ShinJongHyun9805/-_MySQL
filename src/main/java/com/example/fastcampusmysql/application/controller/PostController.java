@@ -1,7 +1,10 @@
 package com.example.fastcampusmysql.application.controller;
 
+import com.example.fastcampusmysql.application.usacase.CreatePostLikeUsecase;
 import com.example.fastcampusmysql.application.usacase.CreatePostUsecase;
 import com.example.fastcampusmysql.application.usacase.GetTimelinePostsUsecase;
+import com.example.fastcampusmysql.domain.member.dto.MemberDto;
+import com.example.fastcampusmysql.domain.member.dto.PostDto;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCount;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCountRequest;
 import com.example.fastcampusmysql.domain.post.dto.PostCommand;
@@ -32,6 +35,8 @@ public class PostController {
 
     private final CreatePostUsecase createPostUsecase;
 
+    private final CreatePostLikeUsecase createPostLikeUsecase;
+
     @PostMapping("")
     public Long create(PostCommand postCommand){
         return createPostUsecase.execute(postCommand);
@@ -43,7 +48,7 @@ public class PostController {
     }
 
     @GetMapping("/members/{memberId}")
-    public Page<Post> getPosts(@PathVariable Long memberId, Pageable pageable){
+    public Page<PostDto> getPosts(@PathVariable Long memberId, Pageable pageable){
         return postReadService.getPosts(memberId, pageable);
     }
 
@@ -60,6 +65,16 @@ public class PostController {
     @PostMapping("/{postId}/like")
     public void likePost(@PathVariable Long postId){
         postWriteService.likePost(postId);
+    }
+
+    @PostMapping("/{postId}/like/optimistic")
+    public void optimisticLikePost(@PathVariable Long postId){
+        postWriteService.likePostByOptimisticLock(postId);
+    }
+
+    @PostMapping("/{postId}/like/v2")
+    public void likePostV2(@PathVariable Long postId, @RequestParam Long memberId){
+        createPostLikeUsecase.execute(postId, memberId);
     }
 
 }
